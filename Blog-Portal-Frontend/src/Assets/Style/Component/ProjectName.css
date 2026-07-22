@@ -1,0 +1,41 @@
+.company{
+    color:#2563EB;
+}
+
+.project_name {
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.home_project_name {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 52px;
+  font-weight: 800;
+  font-family: "Poppins", sans-serif;
+}
+
+.projectName {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 240px;
+
+    padding-left: 20px;
+
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.1;
+}
+.projectName {
+    font-size: 2.2rem;
+    font-weight: 700;
+    padding-left: 20px;
+}
+.tagline {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #6B7280;
+  font-weight: 400;
+}

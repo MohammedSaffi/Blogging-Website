@@ -1,0 +1,97 @@
+.button {
+  height: 40px;
+  width: 150px;
+  color: #FFFFFF;
+  background-color: #000000;
+  font-size: 20px;
+  font-family: "Times New Roman", Times, serif;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.button:hover {
+  color: #2563EB;
+}
+
+.home_button {
+  width: 300px;
+  height: 50px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #2563EB;
+  color: white;
+
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+.home_button:hover {
+  background: #1D4ED8;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* .home_button:hover {
+  height: 40px;
+  font-size: 20px;
+  color: #2563EB;
+  background-color: #000000;
+} */
+
+.logout_button {
+  font-size: 3.5vh;
+  height: 40px;
+  width: 150px;
+  color: #FFFFFF;
+  background-color: #000000;
+  font-family: "Times New Roman", Times, serif;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout_button:hover {
+  color: #2563EB;
+}
+
+.myblog_editButtton {
+  border-radius: 5px;
+  background-color: #000000;
+  color: #FFFFFF;
+  height: 40px;
+  width: 60px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.popup_button_red {
+  cursor: pointer;
+  font-size: 15px;
+  margin: 15px;
+  height: 40px;
+  width: 120px;
+  font-weight: bold;
+  color: #FFFFFF;
+  background-color: #3085d6;
+  border: none;
+  border-radius: 5px;
+}
+
+.popup_button_blue {
+  cursor: pointer;
+  font-size: 15px;
+  margin: 15px;
+  height: 40px;
+  width: 120px;
+  font-weight: bold;
+  color: #FFFFFF;
+  background-color: #dd3333;
+  border: none;
+  border-radius: 5px;
+}
