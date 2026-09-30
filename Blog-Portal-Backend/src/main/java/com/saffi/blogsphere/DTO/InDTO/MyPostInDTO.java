@@ -2,7 +2,7 @@ package com.saffi.blogsphere.DTO.InDTO;
 
 import java.util.Objects;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 import com.saffi.blogsphere.Utilities.Status;
 import com.saffi.blogsphere.Utilities.Technology;

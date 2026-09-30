@@ -6,13 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.saffi.blogsphere.DTO.InDTO.AddPostInDTO;
@@ -48,6 +46,7 @@ import com.saffi.blogsphere.Utilities.Technology;
  * application.
  */
 @Service
+@Transactional
 public class PostServiceImpl implements PostService {
     /**
      * PostRepository Instance.
@@ -59,11 +58,6 @@ public class PostServiceImpl implements PostService {
      */
     @Autowired
     private UserRepository userRepository;
-    /**
-     * MongoTemplate Instance.
-     */
-    @Autowired
-    private MongoTemplate mongoTemplate;
     /**
      * ReactionRepository Instance.
      */
@@ -103,7 +97,7 @@ public class PostServiceImpl implements PostService {
         ResponseOutDTO responseOutDTO = new ResponseOutDTO();
         responseOutDTO.setMessage(ConstantMessages.ADD_POST);
         return responseOutDTO;
-    };
+    }
 
     /**
      * Updates an existing post.
@@ -143,7 +137,7 @@ public class PostServiceImpl implements PostService {
         updatePostOutDTO.setParagraph(post.getParagraph());
         updatePostOutDTO.setTechnology(post.getTechnology());
         return updatePostOutDTO;
-    };
+    }
 
     /**
      * Retrieves all posts by a specific user.
@@ -158,24 +152,13 @@ public class PostServiceImpl implements PostService {
         User user = userRepository.findById(myPostInDTO.getUserId())
                 .orElseThrow(() -> new RecordNotFoundException(
                         ConstantMessages.USER_NOT_FOUND));
-        Query query = new Query();
         String heading = myPostInDTO.getHeading();
         Technology technology = myPostInDTO.getTechnology();
         Status status = myPostInDTO.getStatus();
-        query.addCriteria(Criteria.where("user").is(user));
-        if (Objects.nonNull(heading)) {
-            Pattern pattern = Pattern.compile(Pattern.quote(heading),
-                    Pattern.CASE_INSENSITIVE);
-            query.addCriteria(Criteria.where("heading").regex(pattern));
-        }
-        if (Objects.nonNull(technology)) {
-            query.addCriteria(Criteria.where("technology").is(technology));
-        }
-        if (Objects.nonNull(status)) {
-            query.addCriteria(Criteria.where("status").is(status));
-        }
-        Sort sort = Sort.by("updatedAt").descending();
-        List<Post> posts = mongoTemplate.find(query.with(sort), Post.class);
+        Specification<Post> specification = postSpecification(user, heading,
+            technology, status);
+        List<Post> posts = postRepository.findAll(specification,
+            Sort.by("updatedAt").descending());
         List<GetAllMyPostOutDTO> myPostsOutDTO = new ArrayList<>();
         for (Post post : posts) {
             GetAllMyPostOutDTO myPostOutDTO = new GetAllMyPostOutDTO();
@@ -201,7 +184,7 @@ public class PostServiceImpl implements PostService {
             myPostsOutDTO.add(myPostOutDTO);
         }
         return myPostsOutDTO;
-    };
+    }
 
     /**
      * Retrieves all approved posts based on filter criteria.
@@ -215,21 +198,13 @@ public class PostServiceImpl implements PostService {
         User user = userRepository.findById(getPostInDTO.getUserId())
                 .orElseThrow(() -> new RecordNotFoundException(
                         ConstantMessages.USER_NOT_FOUND));
-        Query query = new Query();
         String heading = getPostInDTO.getHeading();
         Technology technology = getPostInDTO.getTechnology();
-        Status status = Status.APPROVED;
-        query.addCriteria(Criteria.where("status").is(status));
-        if (Objects.nonNull(heading)) {
-            Pattern pattern = Pattern.compile(Pattern.quote(heading),
-                    Pattern.CASE_INSENSITIVE);
-            query.addCriteria(Criteria.where("heading").regex(pattern));
-        }
-        if (Objects.nonNull(technology)) {
-            query.addCriteria(Criteria.where("technology").is(technology));
-        }
-        Sort sort = Sort.by("updatedAt").descending();
-        List<Post> posts = mongoTemplate.find(query.with(sort), Post.class);
+        Status status = getPostInDTO.getStatus();
+        Specification<Post> specification = postSpecification(null, heading,
+            technology, status);
+        List<Post> posts = postRepository.findAll(specification,
+            Sort.by("updatedAt").descending());
         List<GetAllPostOutDTO> getAllPostOutDTOs = new ArrayList<>();
         for (Post post : posts) {
             GetAllPostOutDTO getAllPostOutDTO = new GetAllPostOutDTO();
@@ -348,6 +323,41 @@ public class PostServiceImpl implements PostService {
         ResponseOutDTO responseOutDTO = new ResponseOutDTO();
         responseOutDTO.setMessage(ConstantMessages.DELETE_POST);
         return responseOutDTO;
+    }
+
+    /**
+     * Builds the optional post filters used by the public and user post views.
+     * @param user optional post owner
+     * @param heading optional case-insensitive heading fragment
+     * @param technology optional technology
+     * @param status post status
+     * @return JPA specification for the supplied filters
+     */
+    private Specification<Post> postSpecification(final User user,
+            final String heading, final Technology technology,
+            final Status status) {
+        return (root, query, builder) -> {
+            jakarta.persistence.criteria.Predicate predicate = builder
+                    .conjunction();
+            if (Objects.nonNull(user)) {
+                predicate = builder.and(predicate,
+                        builder.equal(root.get("user"), user));
+            }
+            if (Objects.nonNull(heading)) {
+                predicate = builder.and(predicate, builder.like(builder.lower(
+                        root.get("heading")), "%"
+                        + heading.toLowerCase() + "%"));
+            }
+            if (Objects.nonNull(technology)) {
+                predicate = builder.and(predicate,
+                        builder.equal(root.get("technology"), technology));
+            }
+            if (Objects.nonNull(status)) {
+                predicate = builder.and(predicate,
+                        builder.equal(root.get("status"), status));
+            }
+            return predicate;
+        };
     }
 
     /**

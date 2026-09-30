@@ -2,26 +2,44 @@ package com.saffi.blogsphere.Model;
 
 import java.util.Objects;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
-@Document(collection = "Reactions")
+import org.hibernate.annotations.UuidGenerator;
+
+@Entity
+@Table(name = "reactions", indexes = {
+    @Index(name = "idx_reactions_post", columnList = "post_id") },
+    uniqueConstraints = @UniqueConstraint(name = "uk_reactions_user_post",
+        columnNames = { "user_id", "post_id" }))
 public class Reaction {
     /**
      * This is Reaction ID Field.
      */
     @Id
+    @GeneratedValue
+    @UuidGenerator
+        @Column(name = "reaction_id", nullable = false, updatable = false)
     private String reactionId;
     /**
      * This is User Reference Field.
      */
-    @DBRef
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
     /**
      * This is Post Reference Field.
      */
-    @DBRef
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
     /**
      * This is Reaction Field.

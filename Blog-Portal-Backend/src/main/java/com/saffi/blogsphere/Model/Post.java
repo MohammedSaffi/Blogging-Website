@@ -2,28 +2,47 @@ package com.saffi.blogsphere.Model;
 
 import java.util.Objects;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+import org.hibernate.annotations.UuidGenerator;
 
 import com.saffi.blogsphere.Utilities.Status;
 import com.saffi.blogsphere.Utilities.Technology;
 
-@Document(collection = "Posts")
+@Entity
+@Table(name = "posts", indexes = {
+    @Index(name = "idx_posts_user", columnList = "user_id"),
+    @Index(name = "idx_posts_status_updated", columnList = "status, updated_at") })
 public class Post {
     /**
      * This is post ID.
      */
     @Id
+    @GeneratedValue
+    @UuidGenerator
+        @Column(name = "post_id", nullable = false, updatable = false)
     private String postId;
     /**
      * This is User Reference.
      */
-    @DBRef
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
     /**
      * This is Technology field.
      */
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Technology technology;
     /**
      * This is heading field.
@@ -32,18 +51,23 @@ public class Post {
     /**
      * This is paragraph field.
      */
+    @Column(columnDefinition = "TEXT")
     private String paragraph;
     /**
      * This is created date field.
      */
+    @Column(name = "created_at")
     private String createdAt;
     /**
      * This is updated date field.
      */
+    @Column(name = "updated_at")
     private String updatedAt;
     /**
      * This is Status field.
      */
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Status status;
 
     /**

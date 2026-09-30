@@ -1,6 +1,6 @@
 package com.saffi.blogsphere.Controller;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +22,7 @@ import com.saffi.blogsphere.Service.ReportService;
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/report")
+@RequestMapping({ "/report", "/report/" })
 public class ReportController {
     /**
      * Logger for track log reports.

@@ -5,7 +5,7 @@ export const addReportService = (data) => {
 };
 
 export const getReportedPostService = () => {
-  return getMapping(`/post/reported/`);
+  return getMapping(`/post/reported`);
 };
 
 export const deleteReportService = (postId) => {

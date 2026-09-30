@@ -1,6 +1,6 @@
 package com.saffi.blogsphere.Repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.saffi.blogsphere.Model.Comment;
 import com.saffi.blogsphere.Model.Post;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Repository for managing comments.
  */
-public interface CommentRepository extends MongoRepository<Comment, String> {
+public interface CommentRepository extends JpaRepository<Comment, String> {
     /**
      * Find comments by the associated post.
      * @param post The post for which comments should be retrieved.

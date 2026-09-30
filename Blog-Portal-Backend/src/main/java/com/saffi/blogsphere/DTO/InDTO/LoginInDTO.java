@@ -2,8 +2,8 @@ package com.saffi.blogsphere.DTO.InDTO;
 
 import java.util.Objects;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 /**
  * Data Transfer Object (DTO) handle login request.
@@ -13,7 +13,7 @@ public class LoginInDTO {
      * User Email Address for Authentication.
      */
     @NotBlank(message = "Email ID must not be empty or blank")
-    @Pattern( regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
             message = "Please enter a valid email address")
     private String email;
     /**

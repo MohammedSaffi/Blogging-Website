@@ -2,8 +2,16 @@ package com.saffi.blogsphere.Model;
 
 import java.util.Objects;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
+
+import org.hibernate.annotations.UuidGenerator;
 
 import com.saffi.blogsphere.Utilities.Designation;
 import com.saffi.blogsphere.Utilities.Gender;
@@ -12,12 +20,17 @@ import com.saffi.blogsphere.Utilities.Role;
 /**
  * User entity with fields.
  */
-@Document(collection = "Users")
+@Entity
+@Table(name = "users", indexes = {
+    @Index(name = "idx_users_email", columnList = "email") })
 public class User {
     /**
      * user ID.
      */
     @Id
+    @GeneratedValue
+    @UuidGenerator
+        @Column(name = "user_id", nullable = false, updatable = false)
     private String userId;
     /**
      * First Name of User.
@@ -30,6 +43,7 @@ public class User {
     /**
      * Email of User.
      */
+    @Column(nullable = false, unique = true)
     private String email;
     /**
      * Password of User.
@@ -42,18 +56,22 @@ public class User {
     /**
      * Designation of User.
      */
+    @Enumerated(EnumType.STRING)
     private Designation designation;
     /**
      * Gender of User.
      */
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     /**
      * Role of User.
      */
+    @Enumerated(EnumType.STRING)
     private Role role;
     /**
      * Creation data of User.
      */
+    @Column(name = "created_at")
     private String createdAt;
 
     /**

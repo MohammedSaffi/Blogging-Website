@@ -2,14 +2,14 @@ package com.saffi.blogsphere.Repository;
 
 import java.util.Optional;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.saffi.blogsphere.Model.User;
 
 /**
  * Repository for managing User.
  */
-public interface UserRepository extends MongoRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, String> {
     /**
      * Finds a list of users by their email and password.
      * @param email The email of the user

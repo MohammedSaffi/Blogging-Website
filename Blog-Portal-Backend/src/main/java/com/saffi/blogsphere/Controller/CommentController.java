@@ -2,7 +2,7 @@ package com.saffi.blogsphere.Controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,7 +27,7 @@ import com.saffi.blogsphere.Service.CommentService;
  */
 @CrossOrigin
 @RestController
-@RequestMapping("/comment")
+@RequestMapping({ "/comment", "/comment/" })
 public class CommentController {
     /**
      * Logger for track log reports.

@@ -17,7 +17,7 @@ import com.saffi.blogsphere.Utilities.PasswordEncryption;
 import com.saffi.blogsphere.Utilities.Role;
 
 /**
- * This component initializes the admin user in the MongoDB database.
+ * This component initializes the admin user in the PostgreSQL database.
  */
 @Component
 public class AdminUserInitializer implements CommandLineRunner {
@@ -80,7 +80,7 @@ public class AdminUserInitializer implements CommandLineRunner {
                 logger.error("Admin user already exists");
             }
         } catch (Exception e) {
-            logger.error("error while creating new admin user",e);
+                logger.error("error while creating admin user", e);
         }
     }
 }

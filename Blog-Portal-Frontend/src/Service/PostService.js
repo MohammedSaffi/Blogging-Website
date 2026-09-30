@@ -21,7 +21,7 @@ export const myBlogsService = (data) => {
 };
 
 export const postApprovalService = (data) => {
-  return putMapping(`/post/update/status/`, data);
+  return putMapping(`/post/update/status`, data);
 };
 
 export const updatePostService = (data) => {

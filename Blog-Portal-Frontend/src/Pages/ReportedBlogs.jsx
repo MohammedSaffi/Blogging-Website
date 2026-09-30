@@ -47,12 +47,10 @@ const ReportedBlogs = () => {
             }
           })
           .catch((error) => {
-            setBlogs(null);
             toast.error(error.message);
           });
       })
       .catch((error) => {
-        setBlogs(null);
         if (error.response) {
           toast.error(error.response.data.message);
         } else {
@@ -74,12 +72,10 @@ const ReportedBlogs = () => {
             }
           })
           .catch((error) => {
-            setBlogs(null);
             toast.error(error.message);
           });
       })
       .catch((error) => {
-        setBlogs(null);
         if (error.response) {
           toast.error(error.response.data.message);
         } else {
@@ -98,7 +94,6 @@ const ReportedBlogs = () => {
         }
       })
       .catch((error) => {
-        setBlogs(null);
         toast.error(error.message);
       });
   }, []);

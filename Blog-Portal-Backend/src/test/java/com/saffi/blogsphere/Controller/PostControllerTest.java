@@ -13,14 +13,16 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.saffi.blogsphere.DTO.InDTO.AddPostInDTO;
+import com.saffi.blogsphere.Exception.GlobalError;
 import com.saffi.blogsphere.DTO.InDTO.GetPostInDTO;
 import com.saffi.blogsphere.DTO.InDTO.MyPostInDTO;
 import com.saffi.blogsphere.DTO.InDTO.PostApprovalInDTO;
@@ -39,10 +41,11 @@ import com.saffi.blogsphere.Utilities.Status;
 import com.saffi.blogsphere.Utilities.Technology;
 
 @WebMvcTest(controllers = PostController.class)
+@Import(GlobalError.class)
 public class PostControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
+        @MockitoBean
     private PostService postService;
     @Autowired
     private ObjectMapper objectMapper;

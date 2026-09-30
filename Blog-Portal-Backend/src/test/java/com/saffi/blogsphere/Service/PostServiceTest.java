@@ -2,14 +2,14 @@ package com.saffi.blogsphere.Service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,9 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.jpa.domain.Specification;
 
 import com.saffi.blogsphere.DTO.InDTO.AddPostInDTO;
 import com.saffi.blogsphere.DTO.InDTO.GetPostInDTO;
@@ -64,9 +62,6 @@ public class PostServiceTest {
     private ReactionRepository reactionRepository;
     @Mock
     private ReportRepository reportRepository;
-    @Mock
-    private MongoTemplate mongoTemplate;
-
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -375,24 +370,8 @@ public class PostServiceTest {
         posts.add(post);
         when(userRepository.findById(myPostInDTO.getUserId()))
                 .thenReturn(Optional.of(user));
-        Query query = new Query();
-        String heading = myPostInDTO.getHeading();
-        Technology technology = myPostInDTO.getTechnology();
-        Status status = myPostInDTO.getStatus();
-        query.addCriteria(Criteria.where("user").is(user));
-        if (Objects.nonNull(heading)) {
-            Pattern pattern = Pattern.compile(Pattern.quote(heading),
-                    Pattern.CASE_INSENSITIVE);
-            query.addCriteria(Criteria.where("heading").regex(pattern));
-        }
-        if (Objects.nonNull(technology)) {
-            query.addCriteria(Criteria.where("technology").is(technology));
-        }
-        if (Objects.nonNull(status)) {
-            query.addCriteria(Criteria.where("status").is(status));
-        }
-        Sort sort = Sort.by("updatedAt").descending();
-        when(mongoTemplate.find(query.with(sort), Post.class))
+                when(postRepository.findAll(any(Specification.class),
+                                eq(Sort.by("updatedAt").descending())))
                 .thenReturn(posts);
         Reaction reaction = new Reaction();
         reaction.setReactionId("hsdysfs432");
@@ -476,21 +455,8 @@ public class PostServiceTest {
         posts.add(post);
         when(userRepository.findById(getPostInDTO.getUserId()))
                 .thenReturn(Optional.of(user));
-        Query query = new Query();
-        String heading = getPostInDTO.getHeading();
-        Technology technology = getPostInDTO.getTechnology();
-        Status status = Status.APPROVED;
-        query.addCriteria(Criteria.where("status").is(status));
-        if (Objects.nonNull(heading)) {
-            Pattern pattern = Pattern.compile(Pattern.quote(heading),
-                    Pattern.CASE_INSENSITIVE);
-            query.addCriteria(Criteria.where("heading").regex(pattern));
-        }
-        if (Objects.nonNull(technology)) {
-            query.addCriteria(Criteria.where("technology").is(technology));
-        }
-        Sort sort = Sort.by("updatedAt").descending();
-        when(mongoTemplate.find(query.with(sort), Post.class))
+        when(postRepository.findAll(any(Specification.class),
+                eq(Sort.by("updatedAt").descending())))
                 .thenReturn(posts);
         Reaction reaction = new Reaction();
         reaction.setReactionId("hsdysfs432");

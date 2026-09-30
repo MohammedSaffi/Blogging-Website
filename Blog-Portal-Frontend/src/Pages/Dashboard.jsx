@@ -14,6 +14,7 @@ const Dashboard = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [blogs, setBlogs] = useState([]);
   const [heading, setHeading] = useState("");
+  const [status, setStatus] = useState("All");
   const [technology, setTechnology] = useState("All");
   const [currentBlogId, setCurrentBlogId] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -38,6 +39,7 @@ const Dashboard = () => {
       .then(() => {
         getAllBlogsService({
           userId: user.userId,
+          status: status === "All" ? null : status,
           technology: technology === "All" ? null : technology,
           heading: heading === "" ? null : heading,
         })
@@ -80,6 +82,7 @@ const Dashboard = () => {
           }
           getAllBlogsService({
             userId: user.userId,
+            status: status === "All" ? null : status,
             technology: technology === "All" ? null : technology,
             heading: heading === "" ? null : heading,
           })
@@ -107,7 +110,7 @@ const Dashboard = () => {
           }
         });
     },
-    [user?.userId, technology, heading]
+    [user?.userId, status, technology, heading]
   );
 
   useEffect(() => {
@@ -120,6 +123,7 @@ const Dashboard = () => {
   useEffect(() => {
     const data = {
       userId: user?.userId,
+      status: status === "All" ? null : status,
       technology: technology === "All" ? null : technology,
       heading: heading === "" ? null : heading,
     };
@@ -140,13 +144,16 @@ const Dashboard = () => {
           toast.error(error.message);
         }
       });
-  }, [heading, technology, user?.userId]);
+  }, [heading, status, technology, user?.userId]);
 
   return (
     <div className="parent_div">
       <Navbar
         heading="true"
         technology="true"
+        status="true"
+        onChange={(e) => setStatus(e.target.value)}
+        value={status}
         onChangeHeading={(e) => setHeading(e)}
         onChangeTechnology={(e) => setTechnology(e.target.value)}
         valueTechnology={technology}

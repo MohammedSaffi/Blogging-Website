@@ -2,9 +2,10 @@ package com.saffi.blogsphere.DTO.InDTO;
 
 import java.util.Objects;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 import com.saffi.blogsphere.Utilities.Designation;
 import com.saffi.blogsphere.Utilities.Gender;
@@ -30,11 +31,8 @@ public class RegisterUserInDTO {
     /**
      * Email of User.
      */
-    @NotBlank(message = "Email ID must not be empty or blank")
-    @Pattern(
-            regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
-            message = "Please enter a valid email address"
-    )
+    @NotBlank(message = "Email is required")
+    @Email(message = "Please enter a valid email address")
     private String email;
     /**
      * Password of User.

@@ -2,6 +2,8 @@ package com.saffi.blogsphere.Exception;
 
 import org.springframework.http.HttpStatus;
 
+import tools.jackson.databind.annotation.JsonSerialize;
+
 /**
  * This class return all the exception in proper format.
  */
@@ -18,6 +20,7 @@ public class StatusManager {
     /**
      * @return the status
      */
+    @JsonSerialize(using = HttpStatusSerializer.class)
     public HttpStatus getStatus() {
         return status;
     }

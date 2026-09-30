@@ -8,14 +8,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.saffi.blogsphere.DTO.InDTO.LoginInDTO;
+import com.saffi.blogsphere.Exception.GlobalError;
 import com.saffi.blogsphere.DTO.InDTO.RegisterUserInDTO;
 import com.saffi.blogsphere.DTO.OutDTO.LoginUserOutDTO;
 import com.saffi.blogsphere.DTO.OutDTO.ResponseOutDTO;
@@ -29,10 +31,11 @@ import com.saffi.blogsphere.Utilities.PasswordEncryption;
 import com.saffi.blogsphere.Utilities.Role;
 
 @WebMvcTest(controllers = UserController.class)
+@Import(GlobalError.class)
 public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
+        @MockitoBean
     private UserService userService;
     @Autowired
     private ObjectMapper objectMapper;
@@ -95,7 +98,7 @@ public class UserControllerTest {
         RegisterUserInDTO userInDto = new RegisterUserInDTO();
         userInDto.setFirstName("XXXXX");
         userInDto.setLastName("YYYYY");
-        userInDto.setEmail("QWERTY@gmail.com");
+        userInDto.setEmail("invalid-email");
         userInDto
                 .setPassword(PasswordEncryption.getEncryptedPassword("KKKKKK"));
         userInDto.setMobile("9000000000");
@@ -110,7 +113,7 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest()).andReturn();
         String result = mvc.getResponse().getContentAsString();
         assertEquals(
-                "{\"status\":\"BAD_REQUEST\",\"message\":[{\"email\":\"email must ends with @nucleusteq.com\"}]}",
+                "{\"status\":\"BAD_REQUEST\",\"message\":[{\"email\":\"Please enter a valid email address\"}]}",
                 result);
     }
 

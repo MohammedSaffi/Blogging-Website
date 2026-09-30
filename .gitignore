@@ -1,0 +1,27 @@
+# Java / Spring Boot
+Blog-Portal-Backend/target/
+Blog-Portal-Backend/.idea/
+Blog-Portal-Backend/*.iml
+
+# Frontend
+Blog-Portal-Frontend/node_modules/
+Blog-Portal-Frontend/build/
+Blog-Portal-Frontend/dist/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Environment / secrets
+.env
+*.env
+**/.env
+**/*.env
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

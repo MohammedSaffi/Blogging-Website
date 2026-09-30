@@ -7,24 +7,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.saffi.blogsphere.DTO.InDTO.ReactionInDTO;
+import com.saffi.blogsphere.Exception.GlobalError;
 import com.saffi.blogsphere.DTO.OutDTO.ResponseOutDTO;
 import com.saffi.blogsphere.Exception.RecordNotFoundException;
 import com.saffi.blogsphere.Service.ReactionService;
 import com.saffi.blogsphere.Utilities.ConstantMessages;
 
 @WebMvcTest(controllers = ReactionController.class)
+@Import(GlobalError.class)
 public class ReactionControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
+        @MockitoBean
     private ReactionService reactionService;
     @Autowired
     private ObjectMapper objectMapper;

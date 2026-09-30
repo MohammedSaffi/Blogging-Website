@@ -1,15 +1,15 @@
-# services:
-#   blogportalbackendcon:
-#     image: blogportalbackend
-#     container_name: "blogportalbackendcon"
-#     ports:
-#       - "8080:8080"
-      
-#   blogportalmongodbcon:
-#     image: mongo
-#     container_name: "blogportalmongodbcon"
-#     ports:
-#       - "27017:27017"
+services:
+  blogportalpostgres:
+    image: postgres:16
+    container_name: blogportalpostgres
+    environment:
+      POSTGRES_DB: blog_portal
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - blogportalpostgresdata:/var/lib/postgresql/data
 
-#     links:
-#       - blogportalmongodbcon:mongo
+volumes:
+  blogportalpostgresdata:

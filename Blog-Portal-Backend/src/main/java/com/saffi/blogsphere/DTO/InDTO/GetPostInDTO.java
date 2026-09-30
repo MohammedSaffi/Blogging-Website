@@ -2,8 +2,9 @@ package com.saffi.blogsphere.DTO.InDTO;
 
 import java.util.Objects;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
+import com.saffi.blogsphere.Utilities.Status;
 import com.saffi.blogsphere.Utilities.Technology;
 
 public class GetPostInDTO {
@@ -17,6 +18,10 @@ public class GetPostInDTO {
      */
     private Technology technology = null;
     /**
+     * This is Status field.
+     */
+    private Status status = null;
+    /**
      * This is heading field.
      */
     private String heading = null;
@@ -26,7 +31,7 @@ public class GetPostInDTO {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(heading, technology);
+        return Objects.hash(heading, status, technology);
     }
 
     /**
@@ -45,7 +50,7 @@ public class GetPostInDTO {
         }
         GetPostInDTO other = (GetPostInDTO) obj;
         return Objects.equals(heading, other.heading)
-                && technology == other.technology;
+            && status == other.status && technology == other.technology;
     }
 
     /**
@@ -74,6 +79,20 @@ public class GetPostInDTO {
      */
     public void setTechnology(final Technology technology) {
         this.technology = technology;
+    }
+
+    /**
+     * @return the status
+     */
+    public Status getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(final Status status) {
+        this.status = status;
     }
 
     /**

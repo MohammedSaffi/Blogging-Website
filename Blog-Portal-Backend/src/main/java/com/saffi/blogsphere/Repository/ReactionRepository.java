@@ -1,6 +1,6 @@
 package com.saffi.blogsphere.Repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.saffi.blogsphere.Model.Post;
 import com.saffi.blogsphere.Model.Reaction;
@@ -9,7 +9,7 @@ import com.saffi.blogsphere.Model.User;
 /**
  * Repository for managing reactions.
  */
-public interface ReactionRepository extends MongoRepository<Reaction, String> {
+public interface ReactionRepository extends JpaRepository<Reaction, String> {
     /**
      * Get a reaction by user and post.
      * @param user The user who reacted to the post.

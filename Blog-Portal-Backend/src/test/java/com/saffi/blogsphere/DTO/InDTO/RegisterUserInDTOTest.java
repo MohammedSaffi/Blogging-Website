@@ -3,8 +3,18 @@ package com.saffi.blogsphere.DTO.InDTO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Set;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 
@@ -13,13 +23,26 @@ import com.saffi.blogsphere.Utilities.Gender;
 import com.saffi.blogsphere.Utilities.Role;
 
 public class RegisterUserInDTOTest {
+    private static ValidatorFactory validatorFactory;
+    private Validator validator;
     private RegisterUserInDTO user1;
     private RegisterUserInDTO user2;
     private RegisterUserInDTO user3;
 
+    @BeforeAll
+    public static void setUpValidator() {
+        validatorFactory = Validation.buildDefaultValidatorFactory();
+    }
+
+    @AfterAll
+    public static void closeValidator() {
+        validatorFactory.close();
+    }
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        validator = validatorFactory.getValidator();
         user1 = new RegisterUserInDTO();
         user1.setFirstName("XXXXX");
         user1.setLastName("YYYYY");
@@ -77,5 +100,33 @@ public class RegisterUserInDTOTest {
         assertNotEquals(user1.hashCode(), user2.hashCode());
         user3 = new RegisterUserInDTO();
         assertFalse(user3.equals(null));
+    }
+
+    @Test
+    public void testEmailValidationAllowsNormalValidEmails() {
+        user1.setEmail("saffi@gmail.com");
+        assertTrue(validator.validate(user1).isEmpty());
+
+        user1.setEmail("user@yahoo.com");
+        assertTrue(validator.validate(user1).isEmpty());
+    }
+
+    @Test
+    public void testEmailValidationRejectsInvalidEmails() {
+        assertEmailValidationFails("invalid-email");
+        assertEmailValidationFails("user@");
+        assertEmailValidationFails("@gmail.com");
+    }
+
+    private void assertEmailValidationFails(final String email) {
+        user1.setEmail(email);
+        Set<ConstraintViolation<RegisterUserInDTO>> violations =
+                validator.validate(user1);
+        long emailViolations = violations.stream()
+                .filter(violation -> "email".equals(
+                        violation.getPropertyPath().toString()))
+                .count();
+
+        assertEquals(1, emailViolations);
     }
 }

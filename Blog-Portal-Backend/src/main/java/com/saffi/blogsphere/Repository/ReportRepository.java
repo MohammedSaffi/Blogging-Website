@@ -1,6 +1,6 @@
 package com.saffi.blogsphere.Repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.saffi.blogsphere.Model.Post;
 import com.saffi.blogsphere.Model.Report;
@@ -9,7 +9,7 @@ import com.saffi.blogsphere.Model.User;
 /**
  * Repository for managing reports.
  */
-public interface ReportRepository extends MongoRepository<Report, String> {
+public interface ReportRepository extends JpaRepository<Report, String> {
     /**
      * Delete reports associated with a specific post.
      * @param post The post for which reports should be deleted.

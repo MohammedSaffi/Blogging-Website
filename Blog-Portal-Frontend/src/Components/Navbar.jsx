@@ -1,7 +1,6 @@
 import React from "react";
 import "../Assets/Style/Component/Navbar.css";
 import Dropdown from "../Components/Dropdown";
-import ProjectName from "../Components/ProjectName";
 import { BsFillPersonFill } from "react-icons/bs";
 import {
   TECHNOLOGIES_OPTIONS_NAVBAR,
@@ -13,7 +12,6 @@ const Navbar = (props) => {
 
   return (
     <div className="navbar_component">
-      <ProjectName styling="projectName" />
       <div className="navbar_items">
         {props.heading === "true" ? (
           <input

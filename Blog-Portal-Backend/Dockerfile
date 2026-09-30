@@ -1,5 +1,5 @@
 # Use an OpenJDK base image
-FROM openjdk:8
+FROM eclipse-temurin:21-jre
 
 #Author/Owner
 LABEL MAINTAINER="Mohammed Saffi"
